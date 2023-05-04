@@ -12,11 +12,14 @@
         await init();
 
         let features = [
-            Array.from({length: 100}, () => Math.floor(Math.random())),
-            Array.from({length: 100}, () => Math.floor(Math.random())),
-            Array.from({length: 100}, () => Math.floor(Math.random())),
+            Array.from({length: 100}, () => Math.random()),
+            Array.from({length: 100}, () => Math.random()),
+            Array.from({length: 100}, () => Math.random()),
         ];
-        let targets = Array.from({length: 100}, () => Math.floor(Math.random()));
+        let targets = Array.from({length: 100}, () => Math.random());
+
+        console.dir(features)
+        console.dir(targets)
 
         console.log(wasm_fanova_calculate(features, targets));
     }
