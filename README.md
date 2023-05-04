@@ -11,6 +11,16 @@ A Rust [fANOVA] (functional analysis of variance) implementation.
 
 fANOVA provides a way to calculate feature importance.
 
+How to build Wasm module
+------------------------
+
+```
+$ wasm-pack build --target web
+$ pyton -m http.server 8000
+```
+
+Open http://localhost:8000/index.html and check the console ([index.html](./index.html).
+
 Examples
 --------
 
