@@ -10,9 +10,11 @@ use rayon::iter::{IntoParallelIterator, IntoParallelRefMutIterator, ParallelIter
 use std::collections::BTreeMap;
 use std::ops::Range;
 use thiserror::Error;
+use wasm_bindgen::prelude::*;
 
 /// fANOVA options.
 #[derive(Debug, Clone, Default)]
+#[wasm_bindgen]
 pub struct FanovaOptions {
     random_forest: RandomForestOptions,
     parallel: bool,
@@ -99,6 +101,7 @@ impl Tree {
 
 /// fANOVA object.
 #[derive(Debug)]
+#[wasm_bindgen]
 pub struct Fanova {
     trees: Vec<Tree>,
     feature_space: FeatureSpace,

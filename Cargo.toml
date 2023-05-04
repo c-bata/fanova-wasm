@@ -21,6 +21,11 @@ ordered-float = "3"
 rand = "0.8"
 rayon = "1"
 thiserror = "1"
+wasm-bindgen = "0.2"
+getrandom = { version = "0.2", features = ["js"] }
+
+[lib]
+crate-type = ["cdylib"]
 
 [dev-dependencies]
 anyhow = "1"

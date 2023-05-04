@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8" />
+    <title>hello-wasm example</title>
+</head>
+<body>
+<script type="module">
+    import init, {Fanova, FanovaOptions} from "./pkg/fanova.js";
+
+    async function run_wasm() {
+        await init();
+        var fanova = new Fanova()
+        var fanovaOptions = new FanovaOptions()
+        console.dir(fanova);
+        console.dir(fanovaOptions);
+    }
+
+    run_wasm();
+</script>
+</body>
+</html>
