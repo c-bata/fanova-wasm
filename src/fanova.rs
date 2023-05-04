@@ -11,6 +11,9 @@ use std::collections::BTreeMap;
 use std::ops::Range;
 use thiserror::Error;
 use wasm_bindgen::prelude::*;
+use js_sys::{Array};
+use rand::{Rng, SeedableRng};
+use serde_wasm_bindgen::from_value;
 
 /// fANOVA options.
 #[derive(Debug, Clone, Default)]
@@ -18,6 +21,40 @@ use wasm_bindgen::prelude::*;
 pub struct FanovaOptions {
     random_forest: RandomForestOptions,
     parallel: bool,
+}
+
+#[wasm_bindgen]
+pub fn wasm_fanova_calculate(features: Array, targets: Array) -> Vec<f64> {
+    let features_vec: Vec<Vec<f64>> = features.iter().map(|x| {
+        from_value::<Vec<f64>>(x).unwrap()
+    }).collect();
+    let targets_vec: Vec<f64> = targets.iter().map(|x| { x.as_f64().unwrap() }).collect();
+
+    let mut feature1 = Vec::new();
+    let mut feature2 = Vec::new();
+    let mut feature3 = Vec::new();
+    let mut target = Vec::new();
+
+    let mut rng = rand::rngs::StdRng::seed_from_u64(0);
+    for _ in 0..100 {
+        let f1 = rng.gen();
+        let f2 = rng.gen();
+        let f3 = rng.gen();
+        let t = f1 + f2 * 2.0 + f3 * 3.0;
+
+        feature1.push(f1);
+        feature2.push(f2);
+        feature3.push(f3);
+        target.push(t);
+    }
+
+    let mut fanova = FanovaOptions::new()
+        .random_forest(RandomForestOptions::new().seed(0))
+        .fit(vec![&feature1, &feature2, &feature3], &target).unwrap();
+    let importances = (0..3)
+        .map(|i| fanova.quantify_importance(&[i]).mean)
+        .collect::<Vec<_>>();
+    return importances
 }
 
 impl FanovaOptions {

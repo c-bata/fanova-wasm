@@ -23,6 +23,8 @@ rayon = "1"
 thiserror = "1"
 wasm-bindgen = "0.2"
 getrandom = { version = "0.2", features = ["js"] }
+js-sys = "0.3.61"
+serde-wasm-bindgen = "0.4"
 
 [lib]
 crate-type = ["cdylib"]

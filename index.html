@@ -6,14 +6,19 @@
 </head>
 <body>
 <script type="module">
-    import init, {Fanova, FanovaOptions} from "./pkg/fanova.js";
+    import init, {Fanova, FanovaOptions, wasm_fanova_calculate} from "./pkg/fanova.js";
 
     async function run_wasm() {
         await init();
-        var fanova = new Fanova()
-        var fanovaOptions = new FanovaOptions()
-        console.dir(fanova);
-        console.dir(fanovaOptions);
+
+        let features = [
+            Array.from({length: 100}, () => Math.floor(Math.random())),
+            Array.from({length: 100}, () => Math.floor(Math.random())),
+            Array.from({length: 100}, () => Math.floor(Math.random())),
+        ];
+        let targets = Array.from({length: 100}, () => Math.floor(Math.random()));
+
+        console.log(wasm_fanova_calculate(features, targets));
     }
 
     run_wasm();
