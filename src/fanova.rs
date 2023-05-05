@@ -5,15 +5,14 @@ use crate::random_forest::{RandomForestOptions, RandomForestRegressor};
 use crate::space::FeatureSpace;
 use crate::table::{Table, TableError};
 use itertools::Itertools as _;
+use js_sys::Array;
 use ordered_float::OrderedFloat;
 use rayon::iter::{IntoParallelIterator, IntoParallelRefMutIterator, ParallelIterator};
+use serde_wasm_bindgen::from_value;
 use std::collections::BTreeMap;
 use std::ops::Range;
 use thiserror::Error;
 use wasm_bindgen::prelude::*;
-use js_sys::{Array};
-use rand::{Rng, SeedableRng};
-use serde_wasm_bindgen::from_value;
 
 /// fANOVA options.
 #[derive(Debug, Clone, Default)]
@@ -25,18 +24,23 @@ pub struct FanovaOptions {
 #[wasm_bindgen]
 pub fn wasm_fanova_calculate(features: Array, targets: Array) -> Vec<f64> {
     // TODO(c-bata): Fix error handling
-    let features_vec: Vec<Vec<f64>> = features.iter().map(|x| {
-        from_value::<Vec<f64>>(x).unwrap()
-    }).collect();
-    let targets_vec: Vec<f64> = targets.iter().map(|x| { x.as_f64().unwrap() }).collect();
+    let features_vec: Vec<Vec<f64>> = features
+        .iter()
+        .map(|x| from_value::<Vec<f64>>(x).unwrap())
+        .collect();
+    let targets_vec: Vec<f64> = targets.iter().map(|x| x.as_f64().unwrap()).collect();
 
     let mut fanova = FanovaOptions::new()
         .random_forest(RandomForestOptions::new().seed(0))
-        .fit(features_vec.iter().map(|x| x.as_slice()).collect(), &targets_vec).unwrap();
-    let importances = (0..3)
+        .fit(
+            features_vec.iter().map(|x| x.as_slice()).collect(),
+            &targets_vec,
+        )
+        .unwrap();
+    let importances = (0..features_vec.len())
         .map(|i| fanova.quantify_importance(&[i]).mean)
         .collect::<Vec<_>>();
-    return importances
+    return importances;
 }
 
 impl FanovaOptions {
