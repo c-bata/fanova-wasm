@@ -16,10 +16,10 @@ How to build Wasm module
 
 ```
 $ wasm-pack build --target web
-$ pyton -m http.server 8000
+$ python3 -m http.server 8000
 ```
 
-Open http://localhost:8000/index.html and check the console ([index.html](./index.html).
+Open http://localhost:8000/index.html and check the console ([index.html](./index.html)).
 
 Examples
 --------

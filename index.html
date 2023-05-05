@@ -11,12 +11,12 @@
     async function run_wasm() {
         await init();
 
+        // targets = x1^2 + x2
         let features = [
-            Array.from({length: 100}, () => Math.random()),
-            Array.from({length: 100}, () => Math.random()),
-            Array.from({length: 100}, () => Math.random()),
+            Array.from({length: 100}, () => Math.random() + 1),
+            Array.from({length: 100}, () => Math.random() + 1),
         ];
-        let targets = Array.from({length: 100}, () => Math.random());
+        let targets = features[0].map((x1, i) => x1 * x1 + features[1][i])
 
         console.dir(features)
         console.dir(targets)
